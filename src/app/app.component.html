@@ -1,0 +1,68 @@
+<div>
+  <label for="project-x-file">Load Project X JSON:</label>
+  <input type="file" id="project-x-file" (change)="loadFile($event, 'x')" accept=".json" />
+  <br />
+  <label for="project-y-file">Load Project Y JSON:</label>
+  <input type="file" id="project-y-file" (change)="loadFile($event, 'y')" accept=".json" />
+  <br />
+  <button (click)="compareData()">Compare</button>
+</div>
+<div id="comparison-table">
+  <div class="project-table">
+    <h2>Project X</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Data Consumed</th>
+          <th>Data Received</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of displayData(appXData)">
+          <td>{{ item.key }}</td>
+          <td [ngClass]="{'highlight-difference': highlightDifference(item.key, 'x', 'consumed')}">
+            {{ item.consumed }}
+          </td>
+          <td [ngClass]="{'highlight-difference': highlightDifference(item.key, 'x', 'received')}">
+            {{ item.received }}
+          </td>
+          <td><button (click)="modifyData('x', item.key)">Modify</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="project-table">
+    <h2>Project Y</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Data Consumed</th>
+          <th>Data Received</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of displayData(appYData)">
+          <td>{{ item.key }}</td>
+          <td [ngClass]="{'highlight-difference': highlightDifference(item.key, 'y', 'consumed')}">
+            {{ item.consumed }}
+          </td>
+          <td [ngClass]="{'highlight-difference': highlightDifference(item.key, 'y', 'received')}">
+            {{ item.received }}
+          </td>
+          <td><button (click)="modifyData('y', item.key)">Modify</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div id="differences">
+  <div *ngFor="let diff of differences">
+    Key: {{ diff.key }}, Project X: {{ diff.app_x_value | json }}, Project Y: {{ diff.app_y_value | json }}
+  </div>
+</div>
+<button (click)="saveData()">Save</button>
+<div id="report"></div>
